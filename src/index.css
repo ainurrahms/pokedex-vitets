@@ -1,4 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: 'Press Start 2P', system-ui;
+  }
+}
+
+@layer utilities {
+  #root {
+    @apply p-8 mx-auto my-0 text-center max-w-7xl;
+  }
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition-property: filter;
+    transition-duration: 300ms;
+  }
+}
