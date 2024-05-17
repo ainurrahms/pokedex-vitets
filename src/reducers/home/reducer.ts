@@ -23,7 +23,7 @@ const homeReducer = createReducer(initialState, builder => {
 
   builder.addCase(fetchPokemon.fulfilled, (state, action) => {
     state.isLoading = false;
-    state.pokemonData = action.payload || [];
+    state.pokemonData = state.pokemonData ? [...state.pokemonData, ...action.payload] : action.payload;
   });
 
   builder.addCase(fetchPokemon.rejected, state => {

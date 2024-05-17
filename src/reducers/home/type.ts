@@ -16,6 +16,11 @@ export type PokemonResponse = {
   };
 };
 
+export type ParamFetchPokemon = {
+  limit: number;
+  offset: number;
+};
+
 export type PokemonCategoriesResponse = {
   name: string;
 };

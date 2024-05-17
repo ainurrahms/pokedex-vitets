@@ -1,24 +1,30 @@
 import Card from '@components/Card';
 import Categories from '@components/Categories';
 import { fetchCategories, fetchPokemon } from '@reducers/home/action';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/store';
 
 const Content: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [offset, setOffset] = useState(0);
+  const limit = 12;
 
-  const { pokemonData, categoriesData, isLoading } = useSelector((state: RootState) => state.home);
+  const { pokemonData, isLoading, categoriesData } = useSelector((state: RootState) => state.home);
 
   useEffect(() => {
-    dispatch(fetchPokemon());
+    dispatch(fetchPokemon({ limit, offset }));
     dispatch(fetchCategories());
-  }, [dispatch]);
+  }, [dispatch, limit, offset]);
+
+  const loadMore = () => {
+    setOffset(prevOffset => prevOffset + limit);
+  };
 
   return (
     <div>
       {isLoading ? (
-        <p>Load...</p>
+        <p className="flex items-center justify-center w-auto h-screen">Load...</p>
       ) : (
         <>
           <div className="flex flex-wrap justify-center gap-3">
@@ -33,7 +39,9 @@ const Content: React.FC = () => {
               ))}
             </div>
           </div>
-          <p className="mt-5 duration-300 cursor-pointer hover:text-red-500">Load More</p>
+          <p className="mt-5 duration-300 cursor-pointer hover:text-red-500" onClick={loadMore}>
+            Load More
+          </p>
         </>
       )}
     </div>
