@@ -1,0 +1,41 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { PokemonResponse, TypeAction } from './type';
+
+const BASE_URL = 'https://pokeapi.co/api/v2';
+const PER_PAGE = 12;
+
+export const fetchPokemon = createAsyncThunk(TypeAction.FETCH_POKEMON, async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch(`${BASE_URL}/pokemon?limit=${PER_PAGE}`);
+    const data = await res.json();
+    const indexingPokemon = data.results.map((val: [], index: number) => ({
+      ...val,
+      id: index + 1,
+    }));
+
+    const promises = indexingPokemon.map(async (pokemon: PokemonResponse) => {
+      const detailRes = await fetch(`${BASE_URL}/pokemon/${pokemon.id}`);
+      const detailData = await detailRes.json();
+
+      const species = await fetch(`${BASE_URL}/pokemon-species/${pokemon.name}`);
+      const speciesData = await species.json();
+
+      return { ...pokemon, ...detailData, ...speciesData };
+    });
+    return await Promise.all(promises);
+  } catch (error) {
+    return rejectWithValue('An unknown error occurred');
+  }
+});
+
+export const fetchCategories = createAsyncThunk(TypeAction.FETCH_CATEGORIES, async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch(`${BASE_URL}/type`);
+    const data = await res.json();
+    return data.results;
+  } catch (error) {
+    if (typeof error === 'object' && error && 'message' in error && typeof error.message === 'string') {
+      return rejectWithValue('An unknown error occurred');
+    }
+  }
+});

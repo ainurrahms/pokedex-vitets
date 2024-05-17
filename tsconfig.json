@@ -24,7 +24,8 @@
     "paths": {
       "@features/*": ["./src/features/*"],
       "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@reducers/*": ["./src/reducers/*"]
     }
   },
   "include": ["src", "index.d.ts"],

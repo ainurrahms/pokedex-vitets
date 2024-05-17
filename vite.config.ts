@@ -11,6 +11,7 @@ export default defineConfig({
       '@features': resolve(root, 'features'),
       '@components': resolve(root, 'components'),
       '@assets': resolve(root, 'assets'),
+      '@reducers': resolve(root, 'reducers'),
     },
   },
 });
