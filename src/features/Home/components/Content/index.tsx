@@ -1,5 +1,7 @@
 import Card from '@components/Card';
+import CardSkeleton from '@components/Card/CardSkeleton';
 import Categories from '@components/Categories';
+import CategoriesSkeleton from '@components/Categories/CategoriesSkeleton';
 import { fetchCategories, fetchPokemon } from '@reducers/home/action';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +12,9 @@ const Content: React.FC = () => {
   const [offset, setOffset] = useState(0);
   const limit = 12;
 
-  const { pokemonData, isLoading, categoriesData } = useSelector((state: RootState) => state.home);
+  const { pokemonData, isLoadingPokemonData, isLoadingCategoriesData, categoriesData, numSkeleton } = useSelector(
+    (state: RootState) => state.home,
+  );
 
   useEffect(() => {
     dispatch(fetchPokemon({ limit, offset }));
@@ -23,15 +27,32 @@ const Content: React.FC = () => {
 
   return (
     <div>
-      {isLoading ? (
-        <p className="flex items-center justify-center w-auto h-screen">Load...</p>
+      {isLoadingCategoriesData ? (
+        <div className="flex flex-wrap justify-center gap-3">
+          {[...Array(numSkeleton)].map((_, index) => (
+            <CategoriesSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-center gap-3">
+          {categoriesData?.map((categories, index) => (
+            <Categories key={index} text={categories.name} />
+          ))}
+        </div>
+      )}
+
+      {isLoadingPokemonData ? (
+        <>
+          <div className="w-full mt-5">
+            <div className="flex flex-wrap justify-center gap-2 p-1">
+              {[...Array(numSkeleton)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <>
-          <div className="flex flex-wrap justify-center gap-3">
-            {categoriesData?.map((categories, index) => (
-              <Categories key={index} text={categories.name} />
-            ))}
-          </div>
           <div className="w-full mt-5">
             <div className="flex flex-wrap justify-center gap-2 p-1">
               {pokemonData?.map((item, index) => (
