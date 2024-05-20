@@ -35,8 +35,6 @@ const Content: React.FC = () => {
       ? pokemonData
       : pokemonData?.filter(pokemon => pokemon.types.find(type => type.type.name === selectedCategory));
 
-  console.log(filteredPokemonData);
-
   return (
     <div>
       {isLoadingCategoriesData ? (

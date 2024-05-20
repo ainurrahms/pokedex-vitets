@@ -9,7 +9,7 @@ const Categories: React.FC<CategoriesProps> = props => {
     <div
       className={`${
         props.isActive ? 'bg-red-500' : 'bg-white'
-      } inline-block p-1 my-3 duration-300 bg-white rounded-md outline group hover:bg-red-500 hover:cursor-pointer hover:outline-none`}
+      } inline-block p-1 my-3 duration-300  rounded-md outline group hover:bg-red-500 hover:cursor-pointer hover:outline-none`}
       onClick={props.onClick}
     >
       <p
