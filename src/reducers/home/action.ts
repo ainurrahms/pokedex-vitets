@@ -34,6 +34,11 @@ export const fetchCategories = createAsyncThunk(TypeAction.FETCH_CATEGORIES, asy
   try {
     const res = await fetch(`${BASE_URL}/type`);
     const data = await res.json();
+
+    data.results.splice(0, 0, {
+      name: 'all',
+    });
+
     return data.results;
   } catch (error) {
     if (typeof error === 'object' && error && 'message' in error && typeof error.message === 'string') {

@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from 'src/store';
 const Content: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [offset, setOffset] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const limit = 12;
 
   const { pokemonData, isLoadingPokemonData, isLoadingCategoriesData, categoriesData, numSkeleton } = useSelector(
@@ -25,6 +26,17 @@ const Content: React.FC = () => {
     setOffset(prevOffset => prevOffset + limit);
   };
 
+  const selectCategories = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredPokemonData =
+    selectedCategory === 'all'
+      ? pokemonData
+      : pokemonData?.filter(pokemon => pokemon.types.find(type => type.type.name === selectedCategory));
+
+  console.log(filteredPokemonData);
+
   return (
     <div>
       {isLoadingCategoriesData ? (
@@ -36,7 +48,12 @@ const Content: React.FC = () => {
       ) : (
         <div className="flex flex-wrap justify-center gap-3">
           {categoriesData?.map((categories, index) => (
-            <Categories key={index} text={categories.name} />
+            <Categories
+              key={index}
+              text={categories.name}
+              onClick={() => selectCategories(categories.name)}
+              isActive={categories.name === selectedCategory}
+            />
           ))}
         </div>
       )}
@@ -55,14 +72,22 @@ const Content: React.FC = () => {
         <>
           <div className="w-full mt-5">
             <div className="flex flex-wrap justify-center gap-2 p-1">
-              {pokemonData?.map((item, index) => (
-                <Card key={index} name={item.name} img={item.sprites.front_default} color={item.color.name} />
-              ))}
+              {filteredPokemonData?.length !== 0 ? (
+                <>
+                  {filteredPokemonData?.map((item, index) => (
+                    <Card key={index} name={item.name} img={item.sprites.front_default} color={item.color.name} />
+                  ))}
+                </>
+              ) : (
+                <p className="text-center">No Pokemon found in this category.</p>
+              )}
             </div>
           </div>
-          <p className="mt-5 duration-300 cursor-pointer hover:text-red-500" onClick={loadMore}>
-            Load More
-          </p>
+          {filteredPokemonData?.length !== 0 && (
+            <p className="mt-5 duration-300 cursor-pointer hover:text-red-500" onClick={loadMore}>
+              Load More
+            </p>
+          )}
         </>
       )}
     </div>

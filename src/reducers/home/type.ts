@@ -3,6 +3,13 @@ export enum TypeAction {
   FETCH_CATEGORIES = 'FETCH_CATEGORIES',
 }
 
+type PokemonType = {
+  type: {
+    name: string;
+    url: string;
+  };
+};
+
 export type PokemonResponse = {
   id: number;
   name: string;
@@ -14,6 +21,7 @@ export type PokemonResponse = {
   color: {
     name: string;
   };
+  types: PokemonType[];
 };
 
 export type ParamFetchPokemon = {
