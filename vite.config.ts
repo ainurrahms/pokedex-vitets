@@ -12,6 +12,7 @@ export default defineConfig({
       '@components': resolve(root, 'components'),
       '@assets': resolve(root, 'assets'),
       '@reducers': resolve(root, 'reducers'),
+      '@config': resolve(root, 'config'),
     },
   },
 });

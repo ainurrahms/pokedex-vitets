@@ -25,7 +25,8 @@
       "@features/*": ["./src/features/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"],
-      "@reducers/*": ["./src/reducers/*"]
+      "@reducers/*": ["./src/reducers/*"],
+      "@config/*": ["./src/config/*"]
     }
   },
   "include": ["src", "index.d.ts"],
