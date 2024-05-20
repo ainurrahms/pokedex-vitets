@@ -73,7 +73,13 @@ const Content: React.FC = () => {
               {filteredPokemonData?.length !== 0 ? (
                 <>
                   {filteredPokemonData?.map((item, index) => (
-                    <Card key={index} name={item.name} img={item.sprites.front_default} color={item.color.name} />
+                    <Card
+                      key={index}
+                      name={item.name}
+                      img={item.sprites.front_default}
+                      color={item.color.name}
+                      types={item.types}
+                    />
                   ))}
                 </>
               ) : (
