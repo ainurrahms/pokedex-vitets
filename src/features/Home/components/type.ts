@@ -1,11 +1,10 @@
-export interface CardProps {
-  name: string;
+export interface CardContentProps {
   img: string;
-  color: string;
   types: PokemonType[];
+  name: string;
 }
 
-export type PokemonType = {
+type PokemonType = {
   type: {
     name: string;
     url: string;

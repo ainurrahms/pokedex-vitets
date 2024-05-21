@@ -1,12 +1,8 @@
-interface CategoriesProps {
-  text: string;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-  isActive: boolean;
-}
+import { CategoriesProps } from './type';
 
 const Categories: React.FC<CategoriesProps> = props => {
   return (
-    <div
+    <main
       className={`${
         props.isActive ? 'bg-red-500' : 'bg-white'
       } inline-block p-1 my-3 duration-300  rounded-md outline group hover:bg-red-500 hover:cursor-pointer hover:outline-none`}
@@ -19,7 +15,7 @@ const Categories: React.FC<CategoriesProps> = props => {
       >
         {props.text}
       </p>
-    </div>
+    </main>
   );
 };
 
