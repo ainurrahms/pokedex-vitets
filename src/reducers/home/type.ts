@@ -10,6 +10,13 @@ type PokemonType = {
   };
 };
 
+type PokemonStats = {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+};
+
 export type PokemonResponse = {
   id: number;
   name: string;
@@ -27,6 +34,7 @@ export type PokemonResponse = {
     name: string;
   };
   types: PokemonType[];
+  stats: PokemonStats[];
 };
 
 export type ParamFetchPokemon = {

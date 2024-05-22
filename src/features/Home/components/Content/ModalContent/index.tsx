@@ -1,4 +1,7 @@
 import Card from '@components/Card';
+import CloseButton from '@components/CloseButton';
+import ProgressBar from '@components/ProgressBar';
+import { renderColor } from '@helper/typeColor';
 import { PokemonResponse } from '@reducers/home/type';
 
 interface ModalContentProps {
@@ -10,29 +13,40 @@ const ModalContent: React.FC<ModalContentProps> = ({ onClose, pokemon }) => {
   if (!pokemon) return null;
 
   return (
-    <Card className="w-48 h-48 font-mono">
-      <div className="w-full">
-        <button
-          onClick={onClose}
-          type="button"
-          className="inline-flex items-center justify-center float-right p-2 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-indigo-500"
-        >
-          <svg
-            className="w-6 h-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+    <Card className="flex flex-col font-mono w-500 h-500">
+      <div className="flex justify-end">
+        <CloseButton onClose={onClose} />
       </div>
-      <div
-        style={{ backgroundImage: `url(${pokemon.sprites.other.dream_world.front_default})` }}
-        className="w-full h-full pt-5 bg-center bg-no-repeat bg-contain"
-      ></div>
+      <div className="flex flex-col w-full h-full p-3">
+        <p className="font-bold text-left capitalize">{pokemon.name}</p>
+        <div
+          style={{ backgroundImage: `url(${pokemon.sprites.other.dream_world.front_default})` }}
+          className="w-full pt-5 bg-center bg-no-repeat bg-contain h-1/3"
+        ></div>
+        <div className="flex flex-row justify-center gap-2 mt-3">
+          {pokemon.types.map((val, index) => (
+            <p
+              key={index}
+              className={`inline p-1 font-mono text-xs font-bold text-white uppercase rounded-md ${renderColor(
+                val.type.name,
+              )}`}
+            >
+              {val.type.name}
+            </p>
+          ))}
+        </div>
+        <div className="mt-5">
+          <ul>
+            {pokemon.stats.map((val, index) => (
+              <li className="flex flex-row items-center justify-around" key={index}>
+                <p className="w-full text-left capitalize">{val.stat.name.replace(/[^a-zA-Z ]/g, ' ')}</p>
+                <p className="w-full">{val.base_stat}</p>
+                <ProgressBar />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </Card>
   );
 };
