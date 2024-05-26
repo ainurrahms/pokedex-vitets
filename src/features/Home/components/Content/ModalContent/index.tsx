@@ -41,7 +41,7 @@ const ModalContent: React.FC<ModalContentProps> = ({ onClose, pokemon }) => {
               <li className="flex flex-row items-center justify-around" key={index}>
                 <p className="w-full text-left capitalize">{val.stat.name.replace(/[^a-zA-Z ]/g, ' ')}</p>
                 <p className="w-full">{val.base_stat}</p>
-                <ProgressBar />
+                <ProgressBar current={val.base_stat} color={pokemon.types[0].type.name} />
               </li>
             ))}
           </ul>
