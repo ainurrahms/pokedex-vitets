@@ -4,6 +4,7 @@ import Categories from '@components/Categories';
 import CategoriesSkeleton from '@components/Categories/CategoriesSkeleton';
 import Modal from '@components/Modal';
 import { fetchCategories, fetchPokemon } from '@reducers/home/action';
+import { setIsLoadMore } from '@reducers/home/reducer';
 import { PokemonResponse } from '@reducers/home/type';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,17 +20,18 @@ const Content: React.FC = () => {
   const [eachPokemon, setEachPokemon] = useState<PokemonResponse | null>(null);
   const limit = 12;
 
-  const { pokemonData, isLoadingPokemonData, isLoadingCategoriesData, categoriesData, numSkeleton } = useSelector(
-    (state: RootState) => state.home,
-  );
+  const { pokemonData, isLoadingPokemonData, isLoadMore, isLoadingCategoriesData, categoriesData, numSkeleton } =
+    useSelector((state: RootState) => state.home);
 
   useEffect(() => {
     dispatch(fetchPokemon({ limit, offset }));
+    dispatch(setIsLoadMore(false));
     dispatch(fetchCategories());
-  }, [dispatch, limit, offset]);
+  }, [dispatch, offset]);
 
   const loadMore = () => {
     setOffset(prevOffset => prevOffset + limit);
+    dispatch(setIsLoadMore(true));
   };
 
   const selectCategories = (category: string) => {
@@ -45,6 +47,8 @@ const Content: React.FC = () => {
     selectedCategory === 'all'
       ? pokemonData
       : pokemonData?.filter(pokemon => pokemon.types.find(type => type.type.name === selectedCategory));
+
+  console.log({ isLoadingPokemonData, isLoadMore });
 
   return (
     <div>
@@ -102,12 +106,19 @@ const Content: React.FC = () => {
               )}
             </div>
           </div>
-          {filteredPokemonData?.length !== 0 && (
-            <p className="mt-5 duration-300 cursor-pointer hover:text-red-500" onClick={loadMore}>
-              Load More
-            </p>
-          )}
         </>
+      )}
+      {filteredPokemonData?.length !== 0 && (
+        <p className="mt-5 duration-300 cursor-pointer hover:text-red-500" onClick={loadMore}>
+          Load More
+        </p>
+      )}
+      {isLoadMore && (
+        <div className="flex flex-wrap justify-center gap-3">
+          {[...Array(numSkeleton)].map((_, index) => (
+            <CategoriesSkeleton key={index} />
+          ))}
+        </div>
       )}
       <Modal show={showPopupEachPokemon}>
         <ModalContent onClose={() => setPopupEachPokemon(!showPopupEachPokemon)} pokemon={eachPokemon} />
