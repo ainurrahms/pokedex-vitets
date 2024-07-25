@@ -5,10 +5,10 @@ on:
       - master
 
 jobs:
-  main:
+  master:
     runs-on: ubuntu-latest
     environment:
-      name: Semver #your environment name
+      name: Production #your environment name
     steps:
       - name: Checkout
         uses: actions/checkout@v4
